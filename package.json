@@ -1,18 +1,22 @@
 {
-    "name": "nest-microservices",
-    "version": "1.0.0",
-    "description": "NestJS Microservices Project",
-    "scripts": {
-        "install:all": "npm run install:gateway && npm run install:user && npm run install:post",
-        "install:gateway": "cd api-gateway && npm install",
-        "install:user": "cd user-service && npm install",
-        "install:post": "cd post-service && npm install",
-        "start:dev": "concurrently \"npm run start:dev:gateway\" \"npm run start:dev:user\" \"npm run start:dev:post\"",
-        "start:dev:gateway": "cd api-gateway && npm run start:dev",
-        "start:dev:user": "cd user-service && npm run start:dev",
-        "start:dev:post": "cd post-service && npm run start:dev"
-    },
-    "devDependencies": {
-        "concurrently": "^8.0.1"
-    }
+  "name": "nest-microservices",
+  "version": "1.0.0",
+  "description": "NestJS Microservices Project",
+  "scripts": {
+    "install:all": "npm run install:gateway && npm run install:user && npm run install:post",
+    "install:gateway": "cd api-gateway && npm install",
+    "install:user": "cd user-service && npm install",
+    "install:post": "cd post-service && npm install",
+    "start:dev": "concurrently \"npm run start:dev:gateway\" \"npm run start:dev:user\" \"npm run start:dev:post\"",
+    "start:dev:gateway": "cd api-gateway && npm run start:dev",
+    "start:dev:user": "cd user-service && npm run start:dev",
+    "start:dev:post": "cd post-service && npm run start:dev"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
