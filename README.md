@@ -10,9 +10,22 @@ This project contains three main services:
 
 nest-microservices/
 ├── api-gateway/
+│ ├── src/
+│ ├── test/
+│ ├── package.json
+│ └── tsconfig.json
 ├── user-service/
+│ ├── src/
+│ ├── test/
+│ ├── package.json
+│ └── tsconfig.json
 ├── post-service/
-└── package.json
+│ ├── src/
+│ ├── test/
+│ ├── package.json
+│ └── tsconfig.json
+├── package.json
+└── docker-compose.yml
 
 ## Prerequisites
 
