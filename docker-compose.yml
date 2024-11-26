@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+    api-gateway:
+        build:
+            context: ./api-gateway
+            dockerfile: Dockerfile
+        ports:
+            - '3000:3000'
+        depends_on:
+            - user-service
+            - post-service
+
+    user-service:
+        build:
+            context: ./user-service
+            dockerfile: Dockerfile
+        ports:
+            - '3001:3001'
+        depends_on:
+            - user-db
+
+    post-service:
+        build:
+            context: ./post-service
+            dockerfile: Dockerfile
+        ports:
+            - '3002:3002'
+        depends_on:
+            - post-db
+
+    user-db:
+        image: mysql:8.0
+        environment:
+            MYSQL_ROOT_PASSWORD: password
+            MYSQL_DATABASE: user_service_db
+        ports:
+            - '3306:3306'
+        volumes:
+            - user-db-data:/var/lib/mysql
+
+    post-db:
+        image: mysql:8.0
+        environment:
+            MYSQL_ROOT_PASSWORD: password
+            MYSQL_DATABASE: post_service_db
+        ports:
+            - '3307:3306'
+        volumes:
+            - post-db-data:/var/lib/mysql
+
+volumes:
+    user-db-data:
+    post-db-data:
