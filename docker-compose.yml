@@ -6,17 +6,33 @@ services:
             context: ./api-gateway
             dockerfile: Dockerfile
         ports:
-            - '3000:3000'
+            - '4000:4000'
         depends_on:
             - user-service
             - post-service
+        volumes:
+            - ./api-gateway:/usr/src/app
+            - /usr/src/app/node_modules
 
     user-service:
         build:
             context: ./user-service
             dockerfile: Dockerfile
         ports:
-            - '3001:3001'
+            - '4001:4001'
+        volumes:
+            - ./user-service:/usr/src/app
+            - /usr/src/app/node_modules
+        environment:
+            PORT: 4001
+            DB_HOST: user-db
+            DB_PORT: 3306
+            DB_USERNAME: root
+            DB_PASSWORD: password
+            DB_DATABASE: user_service_db
+            DB_TYPE: mysql
+            DB_SYNCHRONIZE: 'true'
+            DB_LOGGING: 'true'
         depends_on:
             - user-db
 
@@ -25,30 +41,54 @@ services:
             context: ./post-service
             dockerfile: Dockerfile
         ports:
-            - '3002:3002'
+            - '4002:4002'
         depends_on:
             - post-db
+        environment:
+            PORT: 4002
+            DB_HOST: post-db
+            DB_PORT: 3306
+            DB_USERNAME: root
+            DB_PASSWORD: password
+            DB_DATABASE: post_service_db
+            DB_TYPE: mysql
+            DB_SYNCHRONIZE: 'true'
+            DB_LOGGING: 'true'
 
     user-db:
-        image: mysql:8.0
+        image: mysql:8
+        ports:
+            - '3307:3306'
         environment:
             MYSQL_ROOT_PASSWORD: password
             MYSQL_DATABASE: user_service_db
-        ports:
-            - '3306:3306'
+            MYSQL_TCP_PORT: 3306
+            MYSQL_ROOT_HOST: '%'
         volumes:
-            - user-db-data:/var/lib/mysql
+            - user_db_data:/var/lib/mysql
+        healthcheck:
+            test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-p$$MYSQL_ROOT_PASSWORD']
+            interval: 5s
+            timeout: 5s
+            retries: 5
 
     post-db:
-        image: mysql:8.0
+        image: mysql:8
+        ports:
+            - '3308:3306'
         environment:
             MYSQL_ROOT_PASSWORD: password
             MYSQL_DATABASE: post_service_db
-        ports:
-            - '3307:3306'
+            MYSQL_TCP_PORT: 3306
+            MYSQL_ROOT_HOST: '%'
         volumes:
-            - post-db-data:/var/lib/mysql
+            - post_db_data:/var/lib/mysql
+        healthcheck:
+            test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-p$$MYSQL_ROOT_PASSWORD']
+            interval: 5s
+            timeout: 5s
+            retries: 5
 
 volumes:
-    user-db-data:
-    post-db-data:
+    user_db_data:
+    post_db_data:
